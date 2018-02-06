@@ -9,18 +9,22 @@ def trajectoryCalc():
     t.write()
 
 class traCalc:
-    def __init__(self)
+    def __init__(self):
         ballList = []
+        
 
     def read:
-        width = 
-        height = 
-        radius = 
-        nBalls = 
-        for id in range(nBalls):
-            position = 
-            heading = 
-            ballList.append(Ball(id, position, heading))
+        data = json.loads(open('data.json').read())
+        width = data['width'] 
+        height = data['height'] 
+        radius = data['radius']
+        heading = Pos(data[''])
+        balls = data['balls']
+        for i in range(len(balls)):
+            ball = balls[i]
+            id = ball['id']
+            position = Pos(ball['x'], ball['y'])
+            ballList.append(Ball(id, position))
 
     def motion(ball):
         id = checkCollision(ball) 
