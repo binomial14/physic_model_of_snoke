@@ -1,23 +1,23 @@
 import ball
 import json
 
-ballList = []
 
 def trajectoryCalc():
     t = traClac()
     t.read()
-    t.motion(ballList[0])
+    t.motion(t.ballList[0])
     t.write()
 
 class traCalc:
     def __init__(self)
-        width = 100
-        height = 50
-        radius = 5
-        nballs = 16
+        ballList = []
 
     def read:
-        for id in range(nballs):
+        width = 
+        height = 
+        radius = 
+        nBalls = 
+        for id in range(nBalls):
             position = 
             heading = 
             ballList.append(Ball(id, position, heading))
@@ -36,15 +36,14 @@ class traCalc:
     def write():
         return
 
-
     def checkCollision(ball):
         nearest = [-1, 10000] 
-        for id in range(nballs):
+        for id in range(nBalls):
             if id == ball.id:
                 continue
             #if more than one ball collides, need to compare distance of projection
             distance = ball.checkCollision(ballList[id])
-            if distance != -1 && distance < nearest[1]:
+            if distance != -1 & distance < nearest[1]:
                 nearest = [id, distance]
         return nearest[0]
     
