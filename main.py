@@ -15,10 +15,9 @@ class traCalc:
 
     def read:
         data = json.loads(open('data.json').read())
-        width = data['width'] 
-        height = data['height'] 
-        radius = data['radius']
-        heading = Pos(data[''])
+        Ball.width = data['width'] 
+        Ball.height = data['height'] 
+        Ball.radius = data['radius']
         balls = data['balls']
         for i in range(len(balls)):
             ball = balls[i]

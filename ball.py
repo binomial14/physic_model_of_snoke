@@ -22,6 +22,10 @@ class Pos:
 
 
 class Ball:
+    width = 0
+    height = 0
+    radius = 0
+    
     def __init__(self, id, position, heading = Pos(0, 0)):
         self.id = id
         self.position = position
