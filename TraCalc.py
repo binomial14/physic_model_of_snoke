@@ -11,6 +11,7 @@ class TraCalc:
     global STOKE
 
 
+
     def __init__(self):
         ballList = []
         lineList = [[]]
