@@ -22,14 +22,64 @@ class Pos:
 
 
 class Ball:
-    width = 0
-    height = 0
-    radius = 0
+    width = 1440
+    height = 900
+    radius = 15
     
-    def __init__(self, id, position, heading = Pos(0, 0)):
+    def __init__(self, id, position = Pos(0,0), heading = Pos(0,0)):
+        width = 1440.0
+        height = 900.0
+        radius = 15.0
         self.id = id
         self.position = position
-        self.endpoint = position + 
+        #determine the end point
+        if heading.x == 0:
+            if heading.y == 0:
+                self.endpoint = position
+            elif heading.y > 0:
+                self.endpoint = Pos(self.position.x,height)
+            elif heading.y < 0:
+                self.endpoint = Pos(self.position.x,0.0)
+    
+        elif heading.x > 0:
+            if heading.y == 0:
+                self.endpoint = Pos(width,self.position.y)
+            elif heading.y > 0:
+                if (width-self.position.x)/heading.x > (height-self.position.y)/heading.y:
+                    self.endpoint = Pos(self.position.x+(heading.x)*((height-self.position.y)/heading.y),height)
+                elif (width-self.position.x)/heading.x < (height-self.position.y)/heading.y:
+                    self.endpoint = Pos(width,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
+                else:
+                    self.endpoint = Pos(width,height)
+            else:
+                if (width-self.position.x)/heading.x > self.position.y/(-heading.y):
+                    self.endpoint = Pos(self.position.x+(heading.x)*(self.position.y/(-heading.y)),0.0)
+                elif (width-self.position.x)/heading.x < self.position.y/(-heading.y):
+                    self.endpoint = Pos(width,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
+                else:
+                    self.endpoint = Pos(width,0.0)
+
+
+        elif heading.x < 0:
+            if heading.y == 0:
+                self.endpoint = Pos(0.0,self.position.y)
+            elif heading.y > 0:
+                if (self.position.x)/(-heading.x) > (height-self.position.y)/heading.y:
+                    self.endpoint = Pos(self.position.x+(heading.x)*((height-self.position.y)/heading.y),height)
+                elif (self.position.x)/(-heading.x) < (height-self.position.y)/heading.y:
+                    self.endpoint = Pos(0.0,self.position.y+(heading.y)*((self.position.x)/(-heading.x)))
+                else:
+                    self.endpoint = Pos(0.0,height)
+            else:
+                if (self.position.x)/(-heading.x) > self.position.y/(-heading.y):
+                    self.endpoint = Pos(self.position.x+(heading.x)*(self.position.y/(-heading.y)),0.0)
+                elif (self.position.x)/(-heading.x) < self.position.y/(-heading.y):
+                    self.endpoint = Pos(0.0,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
+                else:
+                    self.endpoint = Pos(0.0,0.0)
+        self.heading = heading
+
+
 
     #after collision, position will be the collision point, re-calculate the endpoints
     def collide(self, other):
@@ -52,9 +102,19 @@ class Ball:
         distance = area(p1,p2,p3)/dist(p1,p2)
         if distance < 2*radius:
             return ((p3.x-p1.x)*(p2.y-p1.y)+(p3.y-p1.y)*(p2.x-p1.x))/dist(p1,p2)
+        else:
+            return -1
     
     def area(p1,p2,p3):
         return p1.x*p2.y+p2.x*p3.y+p3.x*p1.y-p1.x*p3.y-p2.x*p1.y-p3.x*p2.y
     
     def bounce(self):
-        return 0
+        width = 1440.0
+        height = 900.0
+        radius = 15.0
+        self.position = self.endpoint
+        if self.endpoint.x == 0 or self.endpoint.x == width:
+            self.heading = Pos(-self.heading.x,self.heading.y)
+        elif self.endpoint.y == 0 or self.endpoint.y == height:
+            self.heading = Pos(self.heading.x,-self.heading.y)
+
