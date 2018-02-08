@@ -1,34 +1,11 @@
-class Pos:
-    def __init__(self, x, y):
-        self.x = x
-        self.y = y
-
-    def __eq__(self, other):
-        return self.x == other.x & self.y == other.y
-        
-    def __ne__(self, other):
-        return self.x != other.x | self.y != other.y
-        
-    def __add__(self, other):
-        return Pos(self.x+other.x, self.y+other.y)
-
-    def __sub__(self, other):
-        return Pos(self.x-other.x, self.y-other.y)
-
-    def dist(self, other):
-        return sqrt((self.x-other.x)**2 + (self.y-other.y)**2)
-
-
-
-
 class Ball:
     width = 1440
     height = 900
     radius = 15
     
-    def __init__(self, id, position = Pos(0,0), heading = Pos(0,0)):
+    def __init__(self, id, ition = (0,0), heading = (0,0)):
         self.id = id
-        self.position = position
+        self.ition = ition
         #determine the end point
         self.heading = heading
         self.endpoint = self.cal_endpoint()
@@ -37,88 +14,90 @@ class Ball:
         width = 1440.0
         height = 900.0
         radius = 15.0
-        if self.heading.x == 0:
-            if self.heading.y == 0:
-                return self.position
-            elif self.heading.y > 0:
-                return Pos(self.position.x,height)
-            elif self.heading.y < 0:
-                return Pos(self.position.x,0.0)
+        if self.heading[0] == 0:
+            if self.heading[1] == 0:
+                return self.ition
+            elif self.heading[1] > 0:
+                return (self.ition[0],height)
+            elif self.heading[1] < 0:
+                return (self.ition[0],0.0)
     
-        elif self.heading.x > 0:
-            if self.heading.y == 0:
-                return Pos(width,self.position.y)
-            elif self.heading.y > 0:
-                if (width-self.position.x)/self.heading.x > (height-self.position.y)/self.heading.y:
-                    return Pos(self.position.x+(self.heading.x)*((height-self.position.y)/self.heading.y),height)
-                elif (width-self.position.x)/self.heading.x < (height-self.position.y)/self.heading.y:
-                    return Pos(width,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+        elif self.heading[0] > 0:
+            if self.heading[1] == 0:
+                return (width,self.ition[1])
+            elif self.heading[1] > 0:
+                if (width-self.ition[0])/self.heading[0] > (height-self.ition[1])/self.heading[1]:
+                    return (self.ition[0]+(self.heading[0])*((height-self.ition[1])/self.heading[1]),height)
+                elif (width-self.ition[0])/self.heading[0] < (height-self.ition[1])/self.heading[1]:
+                    return (width,self.ition[1]+(self.heading[1])*((width-self.ition[0])/self.heading[0]))
                 else:
-                    return Pos(width,height)
+                    return (width,height)
             else:
-                if (width-self.position.x)/self.heading.x > self.position.y/(-self.heading.y):
-                    return Pos(self.position.x+(self.heading.x)*(self.position.y/(-self.heading.y)),0.0)
-                elif (width-self.position.x)/self.heading.x < self.position.y/(-self.heading.y):
-                    return Pos(width,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+                if (width-self.ition[0])/self.heading[0] > self.ition[1]/(-self.heading[1]):
+                    return (self.ition[0]+(self.heading[0])*(self.ition[1]/(-self.heading[1])),0.0)
+                elif (width-self.ition[0])/self.heading[0] < self.ition[1]/(-self.heading[1]):
+                    return (width,self.ition[1]+(self.heading[1])*((width-self.ition[0])/self.heading[0]))
                 else:
-                    return Pos(width,0.0)
+                    return (width,0.0)
 
 
-        elif self.heading.x < 0:
-            if self.heading.y == 0:
-                return Pos(0.0,self.position.y)
-            elif self.heading.y > 0:
-                if (self.position.x)/(-self.heading.x) > (height-self.position.y)/self.heading.y:
-                    return Pos(self.position.x+(self.heading.x)*((height-self.position.y)/self.heading.y),height)
-                elif (self.position.x)/(-self.heading.x) < (height-self.position.y)/self.heading.y:
-                    return Pos(0.0,self.position.y+(self.heading.y)*((self.position.x)/(-self.heading.x)))
+        elif self.heading[0] < 0:
+            if self.heading[1] == 0:
+                return (0.0,self.ition[1])
+            elif self.heading[1] > 0:
+                if (self.ition[0])/(-self.heading[0]) > (height-self.ition[1])/self.heading[1]:
+                    return (self.ition[0]+(self.heading[0])*((height-self.ition[1])/self.heading[1]),height)
+                elif (self.ition[0])/(-self.heading[0]) < (height-self.ition[1])/self.heading[1]:
+                    return (0.0,self.ition[1]+(self.heading[1])*((self.ition[0])/(-self.heading[0])))
                 else:
-                    return Pos(0.0,height)
+                    return (0.0,height)
             else:
-                if (self.position.x)/(-self.heading.x) > self.position.y/(-self.heading.y):
-                    return Pos(self.position.x+(self.heading.x)*(self.position.y/(-self.heading.y)),0.0)
-                elif (self.position.x)/(-self.heading.x) < self.position.y/(-self.heading.y):
-                    return Pos(0.0,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+                if (self.ition[0])/(-self.heading[0]) > self.ition[1]/(-self.heading[1]):
+                    return (self.ition[0]+(self.heading[0])*(self.ition[1]/(-self.heading[1])),0.0)
+                elif (self.ition[0])/(-self.heading[0]) < self.ition[1]/(-self.heading[1]):
+                    return (0.0,self.ition[1]+(self.heading[1])*((width-self.ition[0])/self.heading[0]))
                 else:
-                    return Pos(0.0,0.0)
+                    return (0.0,0.0)
 
 
 
-    #after collision, position will be the collision point, re-calculate the endpoints
+    #after collision, ition will be the collision point, re-calculate the endpoints
     def collide(self, other):
-        p_move = self.position
-        v_move_x = self.endpoint.x-self.position.x
-        v_move_y = self.endpoint.y-self.position.y
-        p_hit = other.position
+        p_move = self.ition
+        v_move[0] = self.endpoint[0]-self.ition[0]
+        v_move[1] = self.endpoint[1]-self.ition[1]
+        p_hit = other.ition
         
-        self.position = other.position
-        self.endpoint.x = v_move_x - ((v_move_x*(p_move.y-p_hit.y))+(v_move_y*(p_move.x-p_hit.x)))*(p_move.x-p_hit.x)/(dist(p_move,p_hit)**2)
-        self.endpoint.y = - ((v_move_x*(p_move.y-p_hit.y))+(v_move_y*(p_move.x-p_hit.x)))*(p_move.x-p_hit.x)/(dist(p_move,p_hit)**2)
+        self.ition = other.ition
+        self.endpoint[0] = v_move[0] - ((v_move[0]*(p_move[1]-p_hit[1]))+(v_move[1]*(p_move[0]-p_hit[0])))*(p_move[0]-p_hit[0])/(dist(p_move,p_hit)**2)
+        self.endpoint[1] = - ((v_move[0]*(p_move[1]-p_hit[1]))+(v_move[1]*(p_move[0]-p_hit[0])))*(p_move[0]-p_hit[0])/(dist(p_move,p_hit)**2)
         return  
 
     #check distance from point to line using area
     #return the projection distance
     def checkCollision(self, other):
-        p1 = self.position
+        p1 = self.ition
         p2 = self.endpoint
-        p3 = other.position
+        p3 = other.ition
         distance = area(p1,p2,p3)/dist(p1,p2)
         if distance < 2*radius:
-            return ((p3.x-p1.x)*(p2.y-p1.y)+(p3.y-p1.y)*(p2.x-p1.x))/dist(p1,p2)
+            return ((p3[0]-p1[0])*(p2[1]-p1[1])+(p3[1]-p1[1])*(p2[0]-p1[0]))/dist(p1,p2)
         else:
             return -1
     
     def area(p1,p2,p3):
-        return p1.x*p2.y+p2.x*p3.y+p3.x*p1.y-p1.x*p3.y-p2.x*p1.y-p3.x*p2.y
+        return p1[0]*p2[1]+p2[0]*p3[1]+p3[0]*p1[1]-p1[0]*p3[1]-p2[0]*p1[1]-p3[0]*p2[1]
     
     def bounce(self):
         width = 1440.0
         height = 900.0
         radius = 15.0
-        self.position = self.endpoint
-        if self.endpoint.x == 0 or self.endpoint.x == width:
-            self.heading = Pos(-self.heading.x,self.heading.y)
-        elif self.endpoint.y == 0 or self.endpoint.y == height:
-            self.heading = Pos(self.heading.x,-self.heading.y)
+        self.ition = self.endpoint
+        if self.endpoint[0] == 0 or self.endpoint[0] == width:
+            self.heading = (-self.heading[0],self.heading[1])
+        elif self.endpoint[1] == 0 or self.endpoint[1] == height:
+            self.heading = (self.heading[0],-self.heading[1])
         self.endpoint = self.cal_endpoint()
 
+    def dist(self, p1, p2):
+        return sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
