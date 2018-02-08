@@ -27,57 +27,60 @@ class Ball:
     radius = 15
     
     def __init__(self, id, position = Pos(0,0), heading = Pos(0,0)):
-        width = 1440.0
-        height = 900.0
-        radius = 15.0
         self.id = id
         self.position = position
         #determine the end point
-        if heading.x == 0:
-            if heading.y == 0:
-                self.endpoint = position
-            elif heading.y > 0:
-                self.endpoint = Pos(self.position.x,height)
-            elif heading.y < 0:
-                self.endpoint = Pos(self.position.x,0.0)
-    
-        elif heading.x > 0:
-            if heading.y == 0:
-                self.endpoint = Pos(width,self.position.y)
-            elif heading.y > 0:
-                if (width-self.position.x)/heading.x > (height-self.position.y)/heading.y:
-                    self.endpoint = Pos(self.position.x+(heading.x)*((height-self.position.y)/heading.y),height)
-                elif (width-self.position.x)/heading.x < (height-self.position.y)/heading.y:
-                    self.endpoint = Pos(width,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
-                else:
-                    self.endpoint = Pos(width,height)
-            else:
-                if (width-self.position.x)/heading.x > self.position.y/(-heading.y):
-                    self.endpoint = Pos(self.position.x+(heading.x)*(self.position.y/(-heading.y)),0.0)
-                elif (width-self.position.x)/heading.x < self.position.y/(-heading.y):
-                    self.endpoint = Pos(width,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
-                else:
-                    self.endpoint = Pos(width,0.0)
-
-
-        elif heading.x < 0:
-            if heading.y == 0:
-                self.endpoint = Pos(0.0,self.position.y)
-            elif heading.y > 0:
-                if (self.position.x)/(-heading.x) > (height-self.position.y)/heading.y:
-                    self.endpoint = Pos(self.position.x+(heading.x)*((height-self.position.y)/heading.y),height)
-                elif (self.position.x)/(-heading.x) < (height-self.position.y)/heading.y:
-                    self.endpoint = Pos(0.0,self.position.y+(heading.y)*((self.position.x)/(-heading.x)))
-                else:
-                    self.endpoint = Pos(0.0,height)
-            else:
-                if (self.position.x)/(-heading.x) > self.position.y/(-heading.y):
-                    self.endpoint = Pos(self.position.x+(heading.x)*(self.position.y/(-heading.y)),0.0)
-                elif (self.position.x)/(-heading.x) < self.position.y/(-heading.y):
-                    self.endpoint = Pos(0.0,self.position.y+(heading.y)*((width-self.position.x)/heading.x))
-                else:
-                    self.endpoint = Pos(0.0,0.0)
         self.heading = heading
+        self.endpoint = self.cal_endpoint()
+    
+    def cal_endpoint(self):
+        width = 1440.0
+        height = 900.0
+        radius = 15.0
+        if self.heading.x == 0:
+            if self.heading.y == 0:
+                return self.position
+            elif self.heading.y > 0:
+                return Pos(self.position.x,height)
+            elif self.heading.y < 0:
+                return Pos(self.position.x,0.0)
+    
+        elif self.heading.x > 0:
+            if self.heading.y == 0:
+                return Pos(width,self.position.y)
+            elif self.heading.y > 0:
+                if (width-self.position.x)/self.heading.x > (height-self.position.y)/self.heading.y:
+                    return Pos(self.position.x+(self.heading.x)*((height-self.position.y)/self.heading.y),height)
+                elif (width-self.position.x)/self.heading.x < (height-self.position.y)/self.heading.y:
+                    return Pos(width,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+                else:
+                    return Pos(width,height)
+            else:
+                if (width-self.position.x)/self.heading.x > self.position.y/(-self.heading.y):
+                    return Pos(self.position.x+(self.heading.x)*(self.position.y/(-self.heading.y)),0.0)
+                elif (width-self.position.x)/self.heading.x < self.position.y/(-self.heading.y):
+                    return Pos(width,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+                else:
+                    return Pos(width,0.0)
+
+
+        elif self.heading.x < 0:
+            if self.heading.y == 0:
+                return Pos(0.0,self.position.y)
+            elif self.heading.y > 0:
+                if (self.position.x)/(-self.heading.x) > (height-self.position.y)/self.heading.y:
+                    return Pos(self.position.x+(self.heading.x)*((height-self.position.y)/self.heading.y),height)
+                elif (self.position.x)/(-self.heading.x) < (height-self.position.y)/self.heading.y:
+                    return Pos(0.0,self.position.y+(self.heading.y)*((self.position.x)/(-self.heading.x)))
+                else:
+                    return Pos(0.0,height)
+            else:
+                if (self.position.x)/(-self.heading.x) > self.position.y/(-self.heading.y):
+                    return Pos(self.position.x+(self.heading.x)*(self.position.y/(-self.heading.y)),0.0)
+                elif (self.position.x)/(-self.heading.x) < self.position.y/(-self.heading.y):
+                    return Pos(0.0,self.position.y+(self.heading.y)*((width-self.position.x)/self.heading.x))
+                else:
+                    return Pos(0.0,0.0)
 
 
 
@@ -117,4 +120,5 @@ class Ball:
             self.heading = Pos(-self.heading.x,self.heading.y)
         elif self.endpoint.y == 0 or self.endpoint.y == height:
             self.heading = Pos(self.heading.x,-self.heading.y)
+        self.endpoint = self.cal_endpoint()
 
