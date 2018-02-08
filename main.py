@@ -11,6 +11,7 @@ def trajectoryCalc():
 class traCalc:
     def __init__(self):
         ballList = []
+        lineList = [[]]
         
 
     def read:
@@ -19,10 +20,10 @@ class traCalc:
         Ball.height = data['height'] 
         Ball.radius = data['radius']
         balls = data['balls']
-        for i in range(len(balls)):
-            ball = balls[i]
-            id = ball['id']
-            position = Pos(ball['x'], ball['y'])
+
+        for id in range(len(balls)):
+            ball = balls[id]
+            position = Pos(ball[0], ball[1])
             ballList.append(Ball(id, position))
 
     def motion(ball):
@@ -37,7 +38,10 @@ class traCalc:
             ball.bounce()
 
     def write():
-        return
+        lines = dict()
+        for id in range(nBalls):
+            lines.update(id, lineList[id]) 
+        print json.dumps(lines)
 
     def checkCollision(ball):
         nearest = [-1, 10000] 
