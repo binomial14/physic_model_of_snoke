@@ -66,15 +66,17 @@ class Ball:
 
     #after collision, position will be the collision point, re-calculate the endpoints
     def collide(self, other):
-        p_move = self.position
-        v_move[0] = self.endpoint[0]-self.position[0]
-        v_move[1] = self.endpoint[1]-self.position[1]
-        p_hit = other.position
-        
-        self.position = other.position
-        self.endpoint[0] = v_move[0] - ((v_move[0]*(p_move[1]-p_hit[1]))+(v_move[1]*(p_move[0]-p_hit[0])))*(p_move[0]-p_hit[0])/(dist(p_move,p_hit)**2)
-        self.endpoint[1] = - ((v_move[0]*(p_move[1]-p_hit[1]))+(v_move[1]*(p_move[0]-p_hit[0])))*(p_move[0]-p_hit[0])/(dist(p_move,p_hit)**2)
-        return  
+        original_heading = (self.heading[0],self.heading[1])
+        other.heading = ((((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2)))
+        self.heading = ((self.heading[0] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(self.heading[1] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2)))
+
+        a = self.dist(self.position,self.endpoint)**2
+        b = 2*((self.position[0]-other.position[0])*(self.endpoint[0]-self.position[0])+(self.position[1]-other.position[1])*(self.endpoint[1]-self.position[1]))
+        c = self.dist(self.position,other.position)**2-4*self.radius
+        t = (-b+math.sqrt(b**2-4*a*c))/(2*a)
+        self.position = (self.position[0]+t*original_heading[0],self.position[1]+t*original_heading[1])
+        self.endpoint = self.cal_endpoint()
+        other.endpoint = other.cal_endpoint()
 
     #check distance from point to line using area
     #return the projection distance
@@ -92,12 +94,23 @@ class Ball:
         return abs(p1[0]*p2[1]+p2[0]*p3[1]+p3[0]*p1[1]-p1[0]*p3[1]-p2[0]*p1[1]-p3[0]*p2[1])
     
     def bounce(self):
-        self.position = self.endpoint
-        if self.endpoint[0] == 0 or self.endpoint[0] == width:
+        if self.endpoint[0] == 0 :
+            self.position = (self.radius,self.endpoint[1]-self.radius*self.heading[1]/(-self.heading[0]))
             self.heading = (-self.heading[0],self.heading[1])
-        elif self.endpoint[1] == 0 or self.endpoint[1] == height:
+
+        elif self.endpoint[0] == self.width :
+            self.position = (self.width-self.radius,self.endpoint[1]-self.radius*self.heading[1]/self.heading[0])
+            self.heading = (-self.heading[0],self.heading[1])
+            
+        elif self.endpoint[1] == 0 :
+            self.position = (self.endpoint[0]-self.eadius*self.heading[0]/(-self.heading[1]),self.radius)
             self.heading = (self.heading[0],-self.heading[1])
+
+        elif self.endpoint[1] == self.height :
+            self.position = (self.endpoint[0]-self.radius*self.heading[0]/self.heading[1],self.height[1]-self.radius)
+            self.heading = (self.heading[0],-self.heading[1])
+            
         self.endpoint = self.cal_endpoint()
 
-    def dist(self, p1, p2):
+    def dist(self, p1 = (0,0), p2 = (0,0)):
         return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
