@@ -103,11 +103,11 @@ class Ball:
             self.heading = (-self.heading[0],self.heading[1])
             
         elif self.endpoint[1] == 0 :
-            self.position = (self.endpoint[0]-self.eadius*self.heading[0]/(-self.heading[1]),self.radius)
+            self.position = (self.endpoint[0]-self.radius*self.heading[0]/(-self.heading[1]),self.radius)
             self.heading = (self.heading[0],-self.heading[1])
 
         elif self.endpoint[1] == self.height :
-            self.position = (self.endpoint[0]-self.radius*self.heading[0]/self.heading[1],self.height[1]-self.radius)
+            self.position = (self.endpoint[0]-self.radius*self.heading[0]/self.heading[1],self.height-self.radius)
             self.heading = (self.heading[0],-self.heading[1])
             
         self.endpoint = self.cal_endpoint()
