@@ -36,7 +36,7 @@ def read():
 
 def motion(ball):
     global COUNT
-    if COUNT == 2:
+    if COUNT >= 4:
         return
     id = checkCollision(ball) 
     #collide
