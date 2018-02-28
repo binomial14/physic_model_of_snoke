@@ -1,14 +1,11 @@
 import math
 
 class Ball:
-    width = 1440.0
-    height = 900.0
+    width = 1000.0
+    height = 500.0
     radius = 15.0
     
     def __init__(self, id, position = (0,0), heading = (0,0)):
-        width = 1440.0
-        height = 900.0
-        radius = 15.0
         self.id = id
         self.position = position
         #determine the end point
