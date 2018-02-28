@@ -1,67 +1,59 @@
 import Ball
+import json
 import numpy as np
 
-global WIDTH
-global HEIGHT
-global RADIUS
-global CORNER_WIDTH
-global BALLS_LIST
-global STOKE
+def calc_run():
+    calc_read()
 
-ballList = []
-lineList = [[]]
-NBALLS = 0
-COUNT = 0
-
-def run():
-    read()
-
-    heading = (STOKE[0][0]-STOKE[1][0], STOKE[0][1]-STOKE[1][1])
-    stoke = Ball.Ball(-1, STOKE[0], heading)
-    motion(stoke)
-
-    write()
-
-def read():
-    global NBALLS
-    Ball.width = WIDTH 
-    Ball.height = HEIGHT
-    Ball.radius = RADIUS
-    Ball.corner_width = CORNER_WIDTH
-    NBALLS = len(BALLS_LIST)
+    head = np.array([310,110])
+    end = np.array([330,130])
 
 
-    for id in range(NBALLS):
-        ballList.append(Ball.Ball(id, BALLS_LIST[id]))
-        lineList[id].append(BALLS_LIST[id])
+    cue = Ball.Ball(-1, head, head-end)
+    calc_motion(cue)
 
-def motion(ball):
-    global COUNT
-    if COUNT >= 4:
+    calc_write()
+
+def calc_read():
+    global balls
+    Ball.Ball.width = WIDTH 
+    Ball.Ball.height = HEIGHT
+    Ball.Ball.radius = RADIUS
+    Ball.Ball.corner_width = CORNER_WIDTH
+
+    for id in range(balls.shape[0]):
+        ballList.append(Ball.Ball(id, balls[id]))
+        lineList.append({'id': id, 'lines': [balls[id]]})
+
+def calc_motion(ball):
+    if len(lineList[ball.id]['lines']) == 4:
         return
-    COUNT += 1
-    id = checkCollision(ball) 
+    id = calc_checkCollision(ball) 
     #collide
     if id != -1:
-        ball.collide(self.ballList[id])
-        motion(ball)
-        motion(ballList[id])
-        lineList[ball.id].append(ball.position)
-        lineList[id].append(ballList[id].position)
+        ball.collide(ballList[id])
+
+        calc_motion(ball)
+        calc_motion(ballList[id])
+
+        lineList[ball.id]['lines'].append(ball.position)
+        lineList[id]['lines'].append(ballList[id].position)
     #bounce
     else:
         ball.bounce()
-        lineList[ball.id].append(ball.position)
-        motion(ball)
 
+        lineList[ball.id]['lines'].append(ball.position)
 
-def write():
+        calc_motion(ball)
+
+def calc_write():
     print(lineList)
+    json.dumps(lineList)
 
-def checkCollision(ball):
-    global NBALLS
+def calc_checkCollision(ball):
+    global balls
     nearest = -1, 10000
-    for id in range(NBALLS):
+    for id in range(balls.shape[0]):
         if id == ball.id:
             continue
         #if more than one ball collides, need to compare distance of projection
@@ -70,11 +62,14 @@ def checkCollision(ball):
             nearest = id, distance
     return nearest[0]
     
-WIDTH = 500
-HEIGHT = 1000
+WIDTH = 1000
+HEIGHT = 500
 RADIUS = 12
 CORNER_WIDTH = 20
-BALLS_LIST = [(300,100)]
-STOKE = [(300, 310), (320, 330)]
-run()
-print(NBALLS)
+balls = np.array([[300,100],[200,200]])
+
+ballList = [] 
+lineList = []
+
+calc_run()
+print(bslls.shape[0])
