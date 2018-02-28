@@ -56,7 +56,7 @@ class Ball:
                 if (self.position[0])/(-self.heading[0]) > self.position[1]/(-self.heading[1]):
                     return (self.position[0]+(self.heading[0])*(self.position[1]/(-self.heading[1])),0.0)
                 elif (self.position[0])/(-self.heading[0]) < self.position[1]/(-self.heading[1]):
-                    return (0.0,self.position[1]+(self.heading[1])*((self.width-self.position[0])/self.heading[0]))
+                    return (0.0,self.position[1]+(self.heading[1])*((self.position[0])/(-self.heading[0])))
                 else:
                     return (0.0,0.0)
 
@@ -93,7 +93,7 @@ class Ball:
     
     def bounce(self):
         if self.endpoint[0] == 0 :
-            self.position = (self.radius,self.endpoint[1]-self.radius*self.heading[1]/(-self.heading[0]))
+            self.position = (self.radius,self.endpoint[1]-self.radius*(self.heading[1])/(-self.heading[0]))
             self.heading = (-self.heading[0],self.heading[1])
 
         elif self.endpoint[0] == self.width :
