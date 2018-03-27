@@ -19,60 +19,60 @@ class Ball:
             if self.heading[1] == 0:
                 return self.position
             elif self.heading[1] > 0:
-                return (self.position[0],self.height)
+                return ([self.position[0],self.height])
             elif self.heading[1] < 0:
-                return (self.position[0],0.0)
+                return ([self.position[0],0.0])
     
         elif self.heading[0] > 0:
             if self.heading[1] == 0:
-                return (self.width,self.position[1])
+                return ([self.width,self.position[1]])
             elif self.heading[1] > 0:
                 if (self.width-self.position[0])/self.heading[0] > (self.height-self.position[1])/self.heading[1]:
-                    return (self.position[0]+(self.heading[0])*((self.height-self.position[1])/self.heading[1]),self.height)
+                    return ([self.position[0]+(self.heading[0])*((self.height-self.position[1])/self.heading[1]),self.height])
                 elif (self.width-self.position[0])/self.heading[0] < (self.height-self.position[1])/self.heading[1]:
-                    return (self.width,self.position[1]+(self.heading[1])*((self.width-self.position[0])/self.heading[0]))
+                    return ([self.width,self.position[1]+(self.heading[1])*((self.width-self.position[0])/self.heading[0])])
                 else:
-                    return (self.width,self.height)
+                    return ([self.width,self.height])
             else:
                 if (self.width-self.position[0])/self.heading[0] > self.position[1]/(-self.heading[1]):
-                    return (self.position[0]+(self.heading[0])*(self.position[1]/(-self.heading[1])),0.0)
+                    return ([self.position[0]+(self.heading[0])*(self.position[1]/(-self.heading[1])),0.0])
                 elif (self.width-self.position[0])/self.heading[0] < self.position[1]/(-self.heading[1]):
-                    return (self.width,self.position[1]+(self.heading[1])*((self.width-self.position[0])/self.heading[0]))
+                    return ([self.width,self.position[1]+(self.heading[1])*((self.width-self.position[0])/self.heading[0])])
                 else:
-                    return (self.width,0.0)
+                    return ([self.width,0.0])
 
 
         elif self.heading[0] < 0:
             if self.heading[1] == 0:
-                return (0.0,self.position[1])
+                return ([0.0,self.position[1]])
             elif self.heading[1] > 0:
                 if (self.position[0])/(-self.heading[0]) > (self.height-self.position[1])/self.heading[1]:
-                    return (self.position[0]+(self.heading[0])*((self.height-self.position[1])/self.heading[1]),self.height)
+                    return ([self.position[0]+(self.heading[0])*((self.height-self.position[1])/self.heading[1]),self.height])
                 elif (self.position[0])/(-self.heading[0]) < (self.height-self.position[1])/self.heading[1]:
-                    return (0.0,self.position[1]+(self.heading[1])*((self.position[0])/(-self.heading[0])))
+                    return ([0.0,self.position[1]+(self.heading[1])*((self.position[0])/(-self.heading[0]))])
                 else:
-                    return (0.0,self.height)
+                    return ([0.0,self.height])
             else:
                 if (self.position[0])/(-self.heading[0]) > self.position[1]/(-self.heading[1]):
-                    return (self.position[0]+(self.heading[0])*(self.position[1]/(-self.heading[1])),0.0)
+                    return ([self.position[0]+(self.heading[0])*(self.position[1]/(-self.heading[1])),0.0])
                 elif (self.position[0])/(-self.heading[0]) < self.position[1]/(-self.heading[1]):
-                    return (0.0,self.position[1]+(self.heading[1])*((self.position[0])/(-self.heading[0])))
+                    return ([0.0,self.position[1]+(self.heading[1])*((self.position[0])/(-self.heading[0]))])
                 else:
-                    return (0.0,0.0)
+                    return ([0.0,0.0])
 
 
 
     #after collision, position will be the collision point, re-calculate the endpoints
     def collide(self, other):
-        original_heading = (self.heading[0],self.heading[1])
-        other.heading = ((((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2)))
-        self.heading = ((self.heading[0] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(self.heading[1] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2)))
-
-        a = self.dist(self.position,self.endpoint)**2
-        b = 2*((self.position[0]-other.position[0])*(self.endpoint[0]-self.position[0])+(self.position[1]-other.position[1])*(self.endpoint[1]-self.position[1]))
-        c = self.dist(self.position,other.position)**2-4*self.radius
-        t = (-b+math.sqrt(b**2-4*a*c))/(2*a)
-        self.position = (self.position[0]+t*original_heading[0],self.position[1]+t*original_heading[1])
+        original_heading = ([self.heading[0],self.heading[1]])
+        other.heading = ([(((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2))])
+        self.heading = ([(self.heading[0] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[0]-other.position[0])/(self.dist(self.position,other.position)**2)),(self.heading[1] - ((self.heading[0]*(self.position[0]-other.position[0]))+(self.heading[1]*(self.position[1]-other.position[1])))*(self.position[1]-other.position[1])/(self.dist(self.position,other.position)**2))])
+        a = original_heading[0]**2+original_heading[1]**2
+        b = 2*((self.position[0]-other.position[0])*(original_heading[0])+(self.position[1]-other.position[1])*(original_heading[1]))
+        c = ((self.position[0]-other.position[0])**2+(self.position[1]-other.position[1])**2)-4*self.radius**2
+        t = (-b-math.sqrt(b**2-4*a*c))/(2*a)
+        
+        self.position = ([self.position[0]+t*original_heading[0],self.position[1]+t*original_heading[1]])
         self.endpoint = self.cal_endpoint()
         other.endpoint = other.cal_endpoint()
 
