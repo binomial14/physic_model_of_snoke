@@ -1,11 +1,11 @@
-#import time
+import time
 
 import math
 import numpy as np
 
 class Ball:
-    width = 1000.0
-    height = 500.0
+    width = 582.0
+    height = 303.0
     radius = 15.0
     
     def __init__(self, id, position = np.array([0,0]), heading = np.array([0,0])):
@@ -85,7 +85,7 @@ class Ball:
         p2 = self.endpoint
         p3 = other.position
         distance = self.area(p1,p2,p3)/self.dist(p1,p2)
-        if distance <= 2*self.radius*scale:
+        if (distance <= 2*self.radius*scale) & (((p3[0]-p1[0])*(p2[0]-p1[0])+(p3[1]-p1[1])*(p2[1]-p1[1]))/self.dist(p1,p2) > -1):
             return ((p3[0]-p1[0])*(p2[0]-p1[0])+(p3[1]-p1[1])*(p2[1]-p1[1]))/self.dist(p1,p2)
         else:
             return -1
@@ -150,4 +150,25 @@ print("Ball3 heading : ",ball3.heading[0],',',ball3.heading[1])
 
 te = time.time()
 print("It cost %f sec"%(te-ts))
+
+
+ball2 = Ball(2,([310,110]),([20,0]))
+ball3 = Ball(3,([214,130]),([0,0]))
+print("Ball2 position : ",ball2.position[0],',',ball2.position[1])
+print("Ball2 endpoint : ",ball2.endpoint[0],',',ball2.endpoint[1])
+print("Ball2 heading : ",ball2.heading[0],',',ball2.heading[1])
+
+print("Ball3 position : ",ball3.position[0],',',ball3.position[1])
+print("Ball3 endpoint : ",ball3.endpoint[0],',',ball3.endpoint[1])
+print("Ball3 heading : ",ball3.heading[0],',',ball3.heading[1])
+
+print("Ball2 check : ",ball2.checkCollision(ball3,1))
+ball2.collide(ball3)
+print("Ball2 position : ",ball2.position[0],',',ball2.position[1])
+print("Ball2 endpoint : ",ball2.endpoint[0],',',ball2.endpoint[1])
+print("Ball2 heading : ",ball2.heading[0],',',ball2.heading[1])
+
+print("Ball3 position : ",ball3.position[0],',',ball3.position[1])
+print("Ball3 endpoint : ",ball3.endpoint[0],',',ball3.endpoint[1])
+print("Ball3 heading : ",ball3.heading[0],',',ball3.heading[1])
 '''
