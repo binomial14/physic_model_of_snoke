@@ -1,3 +1,5 @@
+#import time
+
 import math
 import numpy as np
 
@@ -93,22 +95,59 @@ class Ball:
     
     def bounce(self):
         if self.endpoint[0] == 0 :
-            self.position = (self.radius,self.endpoint[1]-self.radius*(self.heading[1])/(-self.heading[0]))
-            self.heading = (-self.heading[0],self.heading[1])
+            self.position = ([self.radius,self.endpoint[1]-self.radius*(self.heading[1])/(-self.heading[0])])
+            self.heading = ([-self.heading[0],self.heading[1]])
 
         elif self.endpoint[0] == self.width :
-            self.position = (self.width-self.radius,self.endpoint[1]-self.radius*self.heading[1]/self.heading[0])
-            self.heading = (-self.heading[0],self.heading[1])
+            self.position = ([self.width-self.radius,self.endpoint[1]-self.radius*self.heading[1]/self.heading[0]])
+            self.heading = ([-self.heading[0],self.heading[1]])
             
         elif self.endpoint[1] == 0 :
-            self.position = (self.endpoint[0]-self.radius*self.heading[0]/(-self.heading[1]),self.radius)
-            self.heading = (self.heading[0],-self.heading[1])
+            self.position = ([self.endpoint[0]-self.radius*self.heading[0]/(-self.heading[1]),self.radius])
+            self.heading = ([self.heading[0],-self.heading[1]])
 
         elif self.endpoint[1] == self.height :
-            self.position = (self.endpoint[0]-self.radius*self.heading[0]/self.heading[1],self.height-self.radius)
-            self.heading = (self.heading[0],-self.heading[1])
+            self.position = ([self.endpoint[0]-self.radius*self.heading[0]/self.heading[1],self.height-self.radius])
+            self.heading = ([self.heading[0],-self.heading[1]])
             
         self.endpoint = self.cal_endpoint()
 
     def dist(self, p1 = (0,0), p2 = (0,0)):
         return math.sqrt((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)
+'''
+ts = time.time()
+
+ball1 = Ball(1,([70,20]),([1,-1]))
+print("Ball1 position : ", ball1.position[0],',',ball1.position[1])
+print("Ball1 endpoint : ",ball1.endpoint[0],',',ball1.endpoint[1])
+print("Ball1 heading : ",ball1.heading[0],',',ball1.heading[1])
+ball1.bounce()
+print("Ball1 position : ",ball1.position[0],',',ball1.position[1])
+print("Ball1 endpoint : ",ball1.endpoint[0],',',ball1.endpoint[1])
+print("Ball1 heading : ",ball1.heading[0],',',ball1.heading[1])
+
+ball2 = Ball(2,([15,15]),([1,0]))
+ball3 = Ball(3,([200,20]),([0,0]))
+print("Ball2 position : ",ball2.position[0],',',ball2.position[1])
+print("Ball2 endpoint : ",ball2.endpoint[0],',',ball2.endpoint[1])
+print("Ball2 heading : ",ball2.heading[0],',',ball2.heading[1])
+
+print("Ball3 position : ",ball3.position[0],',',ball3.position[1])
+print("Ball3 endpoint : ",ball3.endpoint[0],',',ball3.endpoint[1])
+print("Ball3 heading : ",ball3.heading[0],',',ball3.heading[1])
+
+print("Ball2 check : ",ball2.checkCollision(ball3,1))
+ball2.collide(ball3)
+print("Ball2 position : ",ball2.position[0],',',ball2.position[1])
+print("Ball2 endpoint : ",ball2.endpoint[0],',',ball2.endpoint[1])
+print("Ball2 heading : ",ball2.heading[0],',',ball2.heading[1])
+
+print("Ball3 position : ",ball3.position[0],',',ball3.position[1])
+print("Ball3 endpoint : ",ball3.endpoint[0],',',ball3.endpoint[1])
+print("Ball3 heading : ",ball3.heading[0],',',ball3.heading[1])
+
+#ball0 = Ball(0,([500,250]),([,]))
+
+te = time.time()
+print("It cost %f sec"%(te-ts))
+'''
